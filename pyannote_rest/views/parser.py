@@ -37,12 +37,12 @@ camomilizer = Camomilizer()
 
 # ==== Supported formats ====
 
-from pyannote.parser.mdtm import MDTMParser
-from pyannote.parser.uem import UEMParser
+import pyannote.parser.mdtm
+import pyannote.parser.uem
 
 SUPPORTED_FORMAT = {
-    'mdtm': MDTMParser,
-    'uem': UEMParser,
+    'mdtm': [pyannote.parser.mdtm, pyannote.parser.mdtm.MDTMParser],
+    'uem': [pyannote.parser.uem, pyannote.parser.uem.UEMParser],
 }
 
 
@@ -58,7 +58,7 @@ def parse_file(format):
     if request.method == 'POST':
 
         # initialize new parser for requested format
-        parser = SUPPORTED_FORMAT[format]()
+        parser = SUPPORTED_FORMAT[format][1]()
 
         # parse uploaded file
         uploaded = request.files['file']
@@ -66,12 +66,6 @@ def parse_file(format):
 
         return json.dumps(camomilizer.parser_to_media(parser))
 
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form action="" method=post enctype=multipart/form-data>
-      <p><input type=file name=file>
-         <input type=submit value=Upload>
-    </form>
-    '''
+    if request.method == 'GET':
+
+        return SUPPORTED_FORMAT[format][0].__doc__
