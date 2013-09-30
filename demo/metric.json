@@ -1,0 +1,69 @@
+{
+    "reference": [
+        {
+            "data": "Olivier_TRUCHOT",
+            "fragment": {
+                "end": 2530.698,
+                "start": 2530.0
+            }
+        },
+        {
+            "data": "Arno_KLARSFELD",
+            "fragment": {
+                "end": 2530.698,
+                "start": 2530.0
+            }
+        },
+        {
+            "data": "Olivier_TRUCHOT",
+            "fragment": {
+                "end": 2536.0969999999998,
+                "start": 2530.7
+            }
+        },
+        {
+            "data": "Olivier_TRUCHOT",
+            "fragment": {
+                "end": 2537.134,
+                "start": 2536.09
+            }
+        },
+        {
+            "data": "Arno_KLARSFELD",
+            "fragment": {
+                "end": 2537.134,
+                "start": 2536.09
+            }
+        },
+        {
+            "data": "Olivier_TRUCHOT",
+            "fragment": {
+                "end": 2539.665,
+                "start": 2537.14
+            }
+        },
+        {
+            "data": "Arno_KLARSFELD",
+            "fragment": {
+                "end": 2540.0,
+                "start": 2539.66
+            }
+        }
+    ],
+    "hypothesis": [
+        {
+            "data": "Olivier_TRUCHOT",
+            "fragment": {
+                "end": 2539.66,
+                "start": 2530.0
+            }
+        },
+        {
+            "data": "Laurent_NEUMANN",
+            "fragment": {
+                "end": 2540.0,
+                "start": 2539.66
+            }
+        }
+    ]
+}
