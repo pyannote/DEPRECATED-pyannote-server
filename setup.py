@@ -25,50 +25,23 @@
 # SOFTWARE.
 #
 
-from flask import Blueprint
-from flask import request
-from flask import json
-from flask.ext.cors import origin
+from setuptools import setup, find_packages
 
-parser = Blueprint('parser', __name__, url_prefix='/parser')
-
-from camomilizer import Camomilizer
-camomilizer = Camomilizer()
-
-
-# ==== Supported formats ====
-
-import pyannote.parser.mdtm
-import pyannote.parser.uem
-
-SUPPORTED_FORMAT = {
-    'mdtm': [pyannote.parser.mdtm, pyannote.parser.mdtm.MDTMParser],
-    'uem': [pyannote.parser.uem, pyannote.parser.uem.UEMParser],
-}
-
-
-# GET /parser/ returns
-@parser.route('/', methods=['GET'])
-@origin('*')
-def get_supported():
-    return json.dumps(sorted(SUPPORTED_FORMAT))
-
-
-@parser.route('/<format>/', methods=['GET', 'POST'])
-@origin('*')
-def parse_file(format):
-
-    if request.method == 'POST':
-
-        # initialize new parser for requested format
-        parser = SUPPORTED_FORMAT[format][1]()
-
-        # parse uploaded file
-        uploaded = request.files['file']
-        parser.read(uploaded)
-
-        return json.dumps(camomilizer.parser_to_media(parser))
-
-    if request.method == 'GET':
-
-        return SUPPORTED_FORMAT[format][0].__doc__
+setup(
+    name='PyAnnote-REST',
+    version='0.1',
+    description='REST API on top of PyAnnote',
+    author='Hervé Bredin',
+    author_email='bredin@limsi.fr',
+    # url='http://packages.python.org/PyAnnote',
+    packages=find_packages(),
+    install_requires=['flask >=0.10.1',
+                      'flask-cors >=1.0'],
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Science/Research",
+        "License :: OSI Approved :: MIT License",
+        "Natural Language :: English",
+        "Programming Language :: Python :: 2.7",
+        "Topic :: Scientific/Engineering"]
+)

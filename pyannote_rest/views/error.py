@@ -27,7 +27,8 @@
 
 from flask import Blueprint
 from flask import request
-from flask import json, jsonify
+from flask import json
+from flask.ext.cors import origin
 
 error = Blueprint('error', __name__, url_prefix='/error')
 
@@ -44,6 +45,7 @@ diff = Diff()
 
 
 @error.route('/diff', methods=['POST'])
+@origin('*')
 def compute_diff():
 
     if request.method == 'POST':
@@ -60,6 +62,7 @@ def compute_diff():
 
 
 @error.route('/regression', methods=['POST'])
+@origin('*')
 def compute_regression():
 
     if request.method == 'POST':

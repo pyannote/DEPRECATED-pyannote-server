@@ -27,7 +27,9 @@
 
 from flask import Blueprint
 from flask import request
-from flask import json, jsonify
+from flask import json
+from flask.ext.cors import origin
+
 
 metric = Blueprint('metric', __name__, url_prefix='/metric')
 
@@ -55,11 +57,13 @@ SUPPORTED_METRIC = {
 
 
 @metric.route('/', methods=['GET'])
+@origin('*')
 def get_supported():
     return json.dumps(sorted(SUPPORTED_METRIC))
 
 
 @metric.route('/<name>/', methods=['POST'])
+@origin('*')
 def compute_metric(name):
 
     if request.method == 'POST':
