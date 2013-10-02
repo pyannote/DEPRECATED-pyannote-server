@@ -1,9 +1,13 @@
 # PyAnnote REST API
 
-## Requirements
+## Installation
 
-    $ pip install pyannote
-    $ pip install flask
+    $ git clone https://github.com/hbredin/pyannote.git
+    $ cd pyannote
+    $ git checkout develop
+    $ python setup.py develop
+
+    $ pip install pyannote-rest
 
 ## Running the server
 

@@ -33,7 +33,7 @@ setup(
     description='REST API on top of PyAnnote',
     author='Hervé Bredin',
     author_email='bredin@limsi.fr',
-    # url='http://packages.python.org/PyAnnote',
+    url='http://herve.niderb.fr',
     packages=find_packages(),
     install_requires=['flask >=0.10.1',
                       'flask-cors >=1.0'],
