@@ -56,14 +56,14 @@ SUPPORTED_METRIC = {
 }
 
 
-@metric.route('/', methods=['GET'])
-@origin('*')
+@metric.route('/', methods=['GET', 'OPTIONS'])
+@origin(origin='*', methods=['GET', 'OPTIONS'])
 def get_supported():
     return json.dumps(sorted(SUPPORTED_METRIC))
 
 
-@metric.route('/<name>/', methods=['POST'])
-@origin('*')
+@metric.route('/<name>/', methods=['POST', 'OPTIONS'])
+@origin(origin='*', methods=['POST', 'OPTIONS'])
 def compute_metric(name):
 
     if request.method == 'POST':

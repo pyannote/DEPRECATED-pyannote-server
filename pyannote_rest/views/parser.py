@@ -48,14 +48,14 @@ SUPPORTED_FORMAT = {
 
 
 # GET /parser/ returns
-@parser.route('/', methods=['GET'])
-@origin('*')
+@parser.route('/', methods=['GET', 'OPTIONS'])
+@origin(origin='*', methods=['GET', 'OPTIONS'])
 def get_supported():
     return json.dumps(sorted(SUPPORTED_FORMAT))
 
 
-@parser.route('/<format>/', methods=['GET', 'POST'])
-@origin('*')
+@parser.route('/<format>/', methods=['GET', 'POST', 'OPTIONS'])
+@origin(origin='*', methods=['GET', 'POST', 'OPTIONS'])
 def parse_file(format):
 
     if request.method == 'POST':

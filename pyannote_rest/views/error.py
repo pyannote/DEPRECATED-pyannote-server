@@ -44,8 +44,8 @@ from pyannote.error.diff import Diff
 diff = Diff()
 
 
-@error.route('/diff', methods=['POST'])
-@origin('*')
+@error.route('/diff', methods=['POST', 'OPTIONS'])
+@origin(origin='*', methods=['POST', 'OPTIONS'])
 def compute_diff():
 
     if request.method == 'POST':
@@ -61,8 +61,8 @@ def compute_diff():
         return json.dumps(camomilizer.annotation_to_annotations(D))
 
 
-@error.route('/regression', methods=['POST'])
-@origin('*')
+@error.route('/regression', methods=['POST', 'OPTIONS'])
+@origin(origin='*', methods=['POST', 'OPTIONS'])
 def compute_regression():
 
     if request.method == 'POST':
