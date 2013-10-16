@@ -28,8 +28,8 @@
 from flask import Blueprint
 from flask import request
 from flask import json
-from flask.ext.cors import origin
-
+# from flask.ext.cors import origin
+from pyannote_rest.crossdomain import crossdomain
 
 metric = Blueprint('metric', __name__, url_prefix='/metric')
 
@@ -56,14 +56,16 @@ SUPPORTED_METRIC = {
 }
 
 
-@metric.route('/', methods=['GET', 'OPTIONS'])
-@origin(origin='*', methods=['GET', 'OPTIONS'])
+@metric.route('/', methods=['GET'])
+@crossdomain(origin='*')
 def get_supported():
-    return json.dumps(sorted(SUPPORTED_METRIC))
+
+    if request.method == 'GET':
+        return json.dumps(sorted(SUPPORTED_METRIC))
 
 
-@metric.route('/<name>/', methods=['POST', 'OPTIONS'])
-@origin(origin='*', methods=['POST', 'OPTIONS'])
+@metric.route('/<name>/', methods=['POST'])
+@crossdomain(origin='*')
 def compute_metric(name):
 
     if request.method == 'POST':

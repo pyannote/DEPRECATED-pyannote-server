@@ -28,7 +28,8 @@
 from flask import Blueprint
 from flask import request
 from flask import json
-from flask.ext.cors import origin
+#from flask.ext.cors import origin
+from pyannote_rest.crossdomain import crossdomain
 
 parser = Blueprint('parser', __name__, url_prefix='/parser')
 
@@ -48,14 +49,14 @@ SUPPORTED_FORMAT = {
 
 
 # GET /parser/ returns
-@parser.route('/', methods=['GET', 'OPTIONS'])
-@origin(origin='*', methods=['GET', 'OPTIONS'])
+@parser.route('/', methods=['GET'])
+@crossdomain(origin='*')
 def get_supported():
     return json.dumps(sorted(SUPPORTED_FORMAT))
 
 
-@parser.route('/<format>/', methods=['GET', 'POST', 'OPTIONS'])
-@origin(origin='*', methods=['GET', 'POST', 'OPTIONS'])
+@parser.route('/<format>/', methods=['GET', 'POST'])
+@crossdomain(origin='*')
 def parse_file(format):
 
     if request.method == 'POST':

@@ -28,7 +28,8 @@
 from flask import Blueprint
 from flask import request
 from flask import json
-from flask.ext.cors import origin
+# from flask.ext.cors import origin
+from pyannote_rest.crossdomain import crossdomain
 
 error = Blueprint('error', __name__, url_prefix='/error')
 
@@ -44,8 +45,8 @@ from pyannote.error.diff import Diff
 diff = Diff()
 
 
-@error.route('/diff', methods=['POST', 'OPTIONS'])
-@origin(origin='*', methods=['POST', 'OPTIONS'])
+@error.route('/diff', methods=['POST'])
+@crossdomain(origin='*')
 def compute_diff():
 
     if request.method == 'POST':
@@ -61,8 +62,8 @@ def compute_diff():
         return json.dumps(camomilizer.annotation_to_annotations(D))
 
 
-@error.route('/regression', methods=['POST', 'OPTIONS'])
-@origin(origin='*', methods=['POST', 'OPTIONS'])
+@error.route('/regression', methods=['POST'])
+@crossdomain(origin='*')
 def compute_regression():
 
     if request.method == 'POST':
