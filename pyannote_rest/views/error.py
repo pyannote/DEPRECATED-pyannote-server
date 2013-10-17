@@ -46,7 +46,7 @@ diff = Diff()
 
 
 @error.route('/diff', methods=['POST'])
-@crossdomain(origin='*')
+@crossdomain(origin='*', headers='Content-Type')
 def compute_diff():
 
     if request.method == 'POST':
@@ -63,7 +63,7 @@ def compute_diff():
 
 
 @error.route('/regression', methods=['POST'])
-@crossdomain(origin='*')
+@crossdomain(origin='*', headers='Content-Type')
 def compute_regression():
 
     if request.method == 'POST':

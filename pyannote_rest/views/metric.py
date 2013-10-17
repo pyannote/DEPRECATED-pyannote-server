@@ -57,7 +57,7 @@ SUPPORTED_METRIC = {
 
 
 @metric.route('/', methods=['GET'])
-@crossdomain(origin='*')
+@crossdomain(origin='*', headers='Content-Type')
 def get_supported():
 
     if request.method == 'GET':
@@ -65,7 +65,7 @@ def get_supported():
 
 
 @metric.route('/<name>/', methods=['POST'])
-@crossdomain(origin='*')
+@crossdomain(origin='*', headers='Content-Type')
 def compute_metric(name):
 
     if request.method == 'POST':

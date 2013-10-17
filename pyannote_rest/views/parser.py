@@ -50,13 +50,13 @@ SUPPORTED_FORMAT = {
 
 # GET /parser/ returns
 @parser.route('/', methods=['GET'])
-@crossdomain(origin='*')
+@crossdomain(origin='*', headers='Content-Type')
 def get_supported():
     return json.dumps(sorted(SUPPORTED_FORMAT))
 
 
 @parser.route('/<format>/', methods=['GET', 'POST'])
-@crossdomain(origin='*')
+@crossdomain(origin='*', headers='Content-Type')
 def parse_file(format):
 
     if request.method == 'POST':
