@@ -4,7 +4,7 @@
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2013 Hervé BREDIN (http://herve.niderb.fr/)
+# Copyright (c) 2013-2014 Hervé BREDIN (http://herve.niderb.fr/)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -25,18 +25,29 @@
 # SOFTWARE.
 #
 
+import versioneer
+versioneer.versionfile_source = 'pyannote_rest/_version.py'
+versioneer.versionfile_build = 'pyannote_rest/_version.py'
+versioneer.tag_prefix = ''
+versioneer.parentdir_prefix = 'pyannote_rest-'
+
+
 from setuptools import setup, find_packages
 
 setup(
     name='PyAnnote-REST',
-    version='0.1',
+    version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
     description='REST API on top of PyAnnote',
     author='Hervé Bredin',
     author_email='bredin@limsi.fr',
     url='http://herve.niderb.fr',
     packages=find_packages(),
-    install_requires=['flask >=0.10.1',
-                      'flask-cors >=1.0'],
+    install_requires=[
+        'pyannote >=0.3',
+        'flask >=0.10.1',
+        'flask-cors >=1.0'
+    ],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Science/Research",
