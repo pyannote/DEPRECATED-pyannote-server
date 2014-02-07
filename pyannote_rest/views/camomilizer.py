@@ -27,7 +27,7 @@
 
 
 from pyannote import Segment, Timeline, Annotation, Unknown
-from pyannote.parser.base import BaseTimelineParser, BaseAnnotationParser, BaseTextualAnnotationParser
+from pyannote.parser.base import BaseTimelineParser, BaseTextualTimelineParser, BaseAnnotationParser, BaseTextualAnnotationParser
 
 
 class Camomilizer(object):
@@ -89,7 +89,7 @@ class Camomilizer(object):
 
         for uri in parser.uris:
 
-            if isinstance(parser, BaseTimelineParser):
+            if isinstance(parser, (BaseTimelineParser, BaseTextualTimelineParser)):
                 layers = [
                     self.timeline_to_layer(parser(uri=uri))
                 ]
