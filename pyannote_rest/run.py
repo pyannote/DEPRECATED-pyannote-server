@@ -35,4 +35,4 @@ app.register_blueprint(parser)
 app.register_blueprint(metric)
 app.register_blueprint(error)
 
-app.run(debug=True)
+app.run(host='0.0.0.0')
