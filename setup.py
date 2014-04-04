@@ -44,7 +44,7 @@ setup(
     url='http://herve.niderb.fr',
     packages=find_packages(),
     install_requires=[
-        'pyannote >=0.3.1',
+        'pyannote >=0.4',
         'flask >=0.10.1',
         'flask-cors >=1.0'
     ],

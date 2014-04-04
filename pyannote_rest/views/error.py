@@ -42,7 +42,9 @@ camomilizer = Camomilizer()
 # ==== Supported formats ====
 
 from pyannote.error.diff import Diff
+from pyannote.error.segmentation import SegmentationError
 diff = Diff()
+segmentation_error = SegmentationError()
 
 
 @error.route('/diff', methods=['POST'])
@@ -79,3 +81,21 @@ def compute_regression():
         D = diff.regression(R, B, A)
 
         return json.dumps(camomilizer.annotation_to_annotations(D))
+
+
+@error.route('/segmentation', methods=['POST'])
+@crossdomain(origin='*', headers='Content-Type')
+def compute_segmentation_error():
+
+    if request.method == 'POST':
+
+        reference = request.json['reference']
+        hypothesis = request.json['hypothesis']
+
+        R = pyannotizer.annotations_to_annotation(reference)
+        H = pyannotizer.annotations_to_annotation(hypothesis)
+
+        E = segmentation_error(R, H)
+
+        return json.dumps(camomilizer.annotation_to_annotations(E))
+

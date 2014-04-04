@@ -44,7 +44,8 @@ from pyannote.metric.detection import \
     DetectionErrorRate
 from pyannote.metric.identification import \
     IdentificationErrorRate, IdentificationRecall, IdentificationPrecision
-
+from pyannote.metric.segmentation import \
+    SegmentationPurity, SegmentationCoverage
 
 SUPPORTED_METRIC = {
     'diarization': [
@@ -52,7 +53,9 @@ SUPPORTED_METRIC = {
     'detection': [
         DetectionErrorRate],
     'identification': [
-        IdentificationErrorRate, IdentificationRecall, IdentificationPrecision]
+        IdentificationErrorRate, IdentificationRecall, IdentificationPrecision],
+    'segmentation': [
+        SegmentationCoverage, SegmentationPurity]
 }
 
 
