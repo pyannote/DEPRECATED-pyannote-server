@@ -1,1 +1,4 @@
 include versioneer.py
+include CHANGELOG.md
+include README.md
+include LICENSE
