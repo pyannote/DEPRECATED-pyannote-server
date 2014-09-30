@@ -29,7 +29,7 @@ from flask import Blueprint
 from flask import request
 from flask import json
 #from flask.ext.cors import origin
-from pyannote_rest.crossdomain import crossdomain
+from pyannote.server.crossdomain import crossdomain
 
 parser = Blueprint('parser', __name__, url_prefix='/parser')
 

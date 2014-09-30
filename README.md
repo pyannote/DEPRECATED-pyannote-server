@@ -2,16 +2,11 @@
 
 ## Installation
 
-    $ git clone https://github.com/hbredin/pyannote.git
-    $ cd pyannote
-    $ git checkout develop
-    $ python setup.py develop
-
-    $ pip install pyannote-rest
+    $ pip install pyannote.server
 
 ## Running the server
 
-    $ python -m pyannote_rest.run
+    $ python -m pyannote.server.run
 
 ## Using the API
 

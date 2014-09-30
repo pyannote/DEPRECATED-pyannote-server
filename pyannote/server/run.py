@@ -29,7 +29,7 @@ from views.parser import parser
 from views.metric import metric
 from views.error import error
 
-from pyannote_rest import app
+from pyannote.server import app
 
 app.register_blueprint(parser)
 app.register_blueprint(metric)
