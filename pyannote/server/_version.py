@@ -145,8 +145,8 @@ def versions_from_parentdir(parentdir_prefix, root, verbose=False):
     return {"version": dirname[len(parentdir_prefix):], "full": ""}
 
 tag_prefix = ""
-parentdir_prefix = "pyannote_rest-"
-versionfile_source = "pyannote_rest/_version.py"
+parentdir_prefix = "pyannote-server-"
+versionfile_source = "pyannote/server/_version.py"
 
 def get_versions(default={"version": "unknown", "full": ""}, verbose=False):
     # I am in _version.py, which lives at ROOT/VERSIONFILE_SOURCE. If we have

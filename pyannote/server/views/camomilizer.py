@@ -25,8 +25,10 @@
 # SOFTWARE.
 #
 
-from pyannote import Segment, Timeline, Annotation, Unknown
-from pyannote.parser.base import BaseTimelineParser, BaseTextualTimelineParser, BaseAnnotationParser, BaseTextualAnnotationParser
+from pyannote.core import Unknown
+from pyannote.parser.base import \
+    BaseTimelineParser, BaseTextualTimelineParser, \
+    BaseAnnotationParser, BaseTextualAnnotationParser
 
 
 class Camomilizer(object):

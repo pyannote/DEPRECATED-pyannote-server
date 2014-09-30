@@ -25,7 +25,7 @@
 # SOFTWARE.
 #
 
-from pyannote import Segment, Timeline, Annotation
+from pyannote.core import Segment, Timeline, Annotation
 
 
 class PyAnnotizer(object):

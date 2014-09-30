@@ -26,16 +26,16 @@
 #
 
 import versioneer
-versioneer.versionfile_source = 'pyannote_rest/_version.py'
-versioneer.versionfile_build = 'pyannote_rest/_version.py'
+versioneer.versionfile_source = 'pyannote/server/_version.py'
+versioneer.versionfile_build = 'pyannote/server/_version.py'
 versioneer.tag_prefix = ''
-versioneer.parentdir_prefix = 'pyannote_rest-'
+versioneer.parentdir_prefix = 'pyannote-server-'
 
 
 from setuptools import setup, find_packages
 
 setup(
-    name='PyAnnote-REST',
+    name='pyannote.server',
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
     description='REST API on top of PyAnnote',
@@ -44,7 +44,9 @@ setup(
     url='http://herve.niderb.fr',
     packages=find_packages(),
     install_requires=[
-        'pyannote >=0.4',
+        'pyannote.core >= 0.1',
+        'pyannote.metrics >= 0.2',
+        'pyannote.parser >= 0.1',
         'flask >=0.10.1',
         'flask-cors >=1.0'
     ],

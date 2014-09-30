@@ -29,51 +29,29 @@ from flask import Blueprint
 from flask import request
 from flask import json
 # from flask.ext.cors import origin
-from pyannote_rest.crossdomain import crossdomain
+from pyannote.server.crossdomain import crossdomain
 
-metric = Blueprint('metric', __name__, url_prefix='/metric')
+error = Blueprint('error', __name__, url_prefix='/error')
 
 from pyannotizer import PyAnnotizer
+from camomilizer import Camomilizer
+
 pyannotizer = PyAnnotizer()
+camomilizer = Camomilizer()
 
 # ==== Supported formats ====
 
-from pyannote.metric.diarization import \
-    DiarizationErrorRate, DiarizationPurity, DiarizationCoverage
-from pyannote.metric.detection import \
-    DetectionErrorRate
-from pyannote.metric.identification import \
-    IdentificationErrorRate, IdentificationRecall, IdentificationPrecision
-from pyannote.metric.segmentation import \
-    SegmentationPurity, SegmentationCoverage
-
-SUPPORTED_METRIC = {
-    'diarization': [
-        DiarizationErrorRate, DiarizationCoverage, DiarizationPurity],
-    'detection': [
-        DetectionErrorRate],
-    'identification': [
-        IdentificationErrorRate, IdentificationRecall, IdentificationPrecision],
-    'segmentation': [
-        SegmentationCoverage, SegmentationPurity]
-}
+from pyannote.metrics.errors.identification import IdentificationErrorAnalysis
+from pyannote.metrics.errors.segmentation import SegmentationError
+identificationErrorAnalysis = IdentificationErrorAnalysis()
+segmentation_error = SegmentationError()
 
 
-@metric.route('/', methods=['GET'])
+@error.route('/diff', methods=['POST'])
 @crossdomain(origin='*', headers='Content-Type')
-def get_supported():
-
-    if request.method == 'GET':
-        return json.dumps(sorted(SUPPORTED_METRIC))
-
-
-@metric.route('/<name>/', methods=['POST'])
-@crossdomain(origin='*', headers='Content-Type')
-def compute_metric(name):
+def compute_diff():
 
     if request.method == 'POST':
-
-        metrics = [m() for m in SUPPORTED_METRIC[name]]
 
         reference = request.json['reference']
         hypothesis = request.json['hypothesis']
@@ -81,8 +59,43 @@ def compute_metric(name):
         R = pyannotizer.annotations_to_annotation(reference)
         H = pyannotizer.annotations_to_annotation(hypothesis)
 
-        return json.dumps({
-            m.metric_name(): m(R, H, detailed=True)
-            for m in metrics
-            }
-        )
+        D = identificationErrorAnalysis.annotation(R, H)
+
+        return json.dumps(camomilizer.annotation_to_annotations(D))
+
+
+# @error.route('/regression', methods=['POST'])
+# @crossdomain(origin='*', headers='Content-Type')
+# def compute_regression():
+
+#     if request.method == 'POST':
+
+#         reference = request.json['reference']
+#         before = request.json['before']
+#         after = request.json['after']
+
+#         R = pyannotizer.annotations_to_annotation(reference)
+#         B = pyannotizer.annotations_to_annotation(before)
+#         A = pyannotizer.annotations_to_annotation(after)
+
+#         D = diff.regression(R, B, A)
+
+#         return json.dumps(camomilizer.annotation_to_annotations(D))
+
+
+@error.route('/segmentation', methods=['POST'])
+@crossdomain(origin='*', headers='Content-Type')
+def compute_segmentation_error():
+
+    if request.method == 'POST':
+
+        reference = request.json['reference']
+        hypothesis = request.json['hypothesis']
+
+        R = pyannotizer.annotations_to_annotation(reference)
+        H = pyannotizer.annotations_to_annotation(hypothesis)
+
+        E = segmentation_error(R, H)
+
+        return json.dumps(camomilizer.annotation_to_annotations(E))
+

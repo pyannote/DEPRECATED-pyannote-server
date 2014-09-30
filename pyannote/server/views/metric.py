@@ -29,29 +29,52 @@ from flask import Blueprint
 from flask import request
 from flask import json
 # from flask.ext.cors import origin
-from pyannote_rest.crossdomain import crossdomain
+from pyannote.server.crossdomain import crossdomain
 
-error = Blueprint('error', __name__, url_prefix='/error')
+metric = Blueprint('metric', __name__, url_prefix='/metric')
 
 from pyannotizer import PyAnnotizer
-from camomilizer import Camomilizer
-
 pyannotizer = PyAnnotizer()
-camomilizer = Camomilizer()
 
 # ==== Supported formats ====
 
-from pyannote.error.diff import Diff
-from pyannote.error.segmentation import SegmentationError
-diff = Diff()
-segmentation_error = SegmentationError()
+from pyannote.metrics.diarization import \
+    DiarizationErrorRate, DiarizationPurity, DiarizationCoverage
+from pyannote.metrics.detection import \
+    DetectionErrorRate
+from pyannote.metrics.identification import \
+    IdentificationErrorRate, IdentificationRecall, IdentificationPrecision
+from pyannote.metrics.segmentation import \
+    SegmentationPurity, SegmentationCoverage
+
+SUPPORTED_METRIC = {
+    'diarization': [
+        DiarizationErrorRate, DiarizationCoverage, DiarizationPurity],
+    'detection': [
+        DetectionErrorRate],
+    'identification': [
+        IdentificationErrorRate,
+        IdentificationRecall, IdentificationPrecision],
+    'segmentation': [
+        SegmentationCoverage, SegmentationPurity]
+}
 
 
-@error.route('/diff', methods=['POST'])
+@metric.route('/', methods=['GET'])
 @crossdomain(origin='*', headers='Content-Type')
-def compute_diff():
+def get_supported():
+
+    if request.method == 'GET':
+        return json.dumps(sorted(SUPPORTED_METRIC))
+
+
+@metric.route('/<name>/', methods=['POST'])
+@crossdomain(origin='*', headers='Content-Type')
+def compute_metric(name):
 
     if request.method == 'POST':
+
+        metrics = [m() for m in SUPPORTED_METRIC[name]]
 
         reference = request.json['reference']
         hypothesis = request.json['hypothesis']
@@ -59,43 +82,8 @@ def compute_diff():
         R = pyannotizer.annotations_to_annotation(reference)
         H = pyannotizer.annotations_to_annotation(hypothesis)
 
-        D = diff.compare(R, H)
-
-        return json.dumps(camomilizer.annotation_to_annotations(D))
-
-
-@error.route('/regression', methods=['POST'])
-@crossdomain(origin='*', headers='Content-Type')
-def compute_regression():
-
-    if request.method == 'POST':
-
-        reference = request.json['reference']
-        before = request.json['before']
-        after = request.json['after']
-
-        R = pyannotizer.annotations_to_annotation(reference)
-        B = pyannotizer.annotations_to_annotation(before)
-        A = pyannotizer.annotations_to_annotation(after)
-
-        D = diff.regression(R, B, A)
-
-        return json.dumps(camomilizer.annotation_to_annotations(D))
-
-
-@error.route('/segmentation', methods=['POST'])
-@crossdomain(origin='*', headers='Content-Type')
-def compute_segmentation_error():
-
-    if request.method == 'POST':
-
-        reference = request.json['reference']
-        hypothesis = request.json['hypothesis']
-
-        R = pyannotizer.annotations_to_annotation(reference)
-        H = pyannotizer.annotations_to_annotation(hypothesis)
-
-        E = segmentation_error(R, H)
-
-        return json.dumps(camomilizer.annotation_to_annotations(E))
-
+        return json.dumps({
+            m.metric_name(): m(R, H, detailed=True)
+            for m in metrics
+            }
+        )
