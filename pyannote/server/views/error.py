@@ -28,21 +28,13 @@
 from flask import Blueprint
 from flask import request
 from flask import json
-# from flask.ext.cors import origin
 from pyannote.server.crossdomain import crossdomain
 
 error = Blueprint('error', __name__, url_prefix='/error')
 
-from pyannotizer import PyAnnotizer
-from camomilizer import Camomilizer
-
-pyannotizer = PyAnnotizer()
-camomilizer = Camomilizer()
-
-# ==== Supported formats ====
-
 from pyannote.metrics.errors.identification import IdentificationErrorAnalysis
 from pyannote.metrics.errors.segmentation import SegmentationError
+
 identificationErrorAnalysis = IdentificationErrorAnalysis()
 segmentation_error = SegmentationError()
 
@@ -53,15 +45,13 @@ def compute_diff():
 
     if request.method == 'POST':
 
-        reference = request.json['reference']
-        hypothesis = request.json['hypothesis']
-
-        R = pyannotizer.annotations_to_annotation(reference)
-        H = pyannotizer.annotations_to_annotation(hypothesis)
+        data = request.json
+        R = data['reference']
+        H = data['hypothesis']
 
         D = identificationErrorAnalysis.annotation(R, H)
 
-        return json.dumps(camomilizer.annotation_to_annotations(D))
+        return json.dumps(D)
 
 
 # @error.route('/regression', methods=['POST'])
@@ -70,17 +60,15 @@ def compute_diff():
 
 #     if request.method == 'POST':
 
-#         reference = request.json['reference']
-#         before = request.json['before']
-#         after = request.json['after']
+#         data = request.json
 
-#         R = pyannotizer.annotations_to_annotation(reference)
-#         B = pyannotizer.annotations_to_annotation(before)
-#         A = pyannotizer.annotations_to_annotation(after)
+#         R = data['reference']
+#         B = data['before']
+#         A = data['after']
 
 #         D = diff.regression(R, B, A)
 
-#         return json.dumps(camomilizer.annotation_to_annotations(D))
+#         return json.dumps(D)
 
 
 @error.route('/segmentation', methods=['POST'])
@@ -89,13 +77,10 @@ def compute_segmentation_error():
 
     if request.method == 'POST':
 
-        reference = request.json['reference']
-        hypothesis = request.json['hypothesis']
-
-        R = pyannotizer.annotations_to_annotation(reference)
-        H = pyannotizer.annotations_to_annotation(hypothesis)
+        data = request.json
+        R = data['reference']
+        H = data['hypothesis']
 
         E = segmentation_error(R, H)
 
-        return json.dumps(camomilizer.annotation_to_annotations(E))
-
+        return json.dumps(E)

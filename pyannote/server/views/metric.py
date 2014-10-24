@@ -28,15 +28,10 @@
 from flask import Blueprint
 from flask import request
 from flask import json
-# from flask.ext.cors import origin
 from pyannote.server.crossdomain import crossdomain
 
 metric = Blueprint('metric', __name__, url_prefix='/metric')
 
-from pyannotizer import PyAnnotizer
-pyannotizer = PyAnnotizer()
-
-# ==== Supported formats ====
 
 from pyannote.metrics.diarization import \
     DiarizationErrorRate, DiarizationPurity, DiarizationCoverage
@@ -76,14 +71,11 @@ def compute_metric(name):
 
         metrics = [m() for m in SUPPORTED_METRIC[name]]
 
-        reference = request.json['reference']
-        hypothesis = request.json['hypothesis']
-
-        R = pyannotizer.annotations_to_annotation(reference)
-        H = pyannotizer.annotations_to_annotation(hypothesis)
+        data = request.json
+        R = data['reference']
+        H = data['hypothesis']
 
         return json.dumps({
             m.metric_name(): m(R, H, detailed=True)
             for m in metrics
-            }
-        )
+        })

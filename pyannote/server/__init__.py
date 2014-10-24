@@ -26,7 +26,34 @@
 #
 
 from flask import Flask
+from flask.json import JSONEncoder, JSONDecoder
+import pyannote.core.json
+
+
+class PyAnnoteJSONEncoder(JSONEncoder):
+
+    def default(self, o):
+
+        from pyannote.core.segment import Segment
+        from pyannote.core.timeline import Timeline
+        from pyannote.core.annotation import Annotation
+        from pyannote.core.transcription import Transcription
+
+        if isinstance(o, (Segment, Timeline, Annotation, Transcription)):
+            return o.for_json()
+
+        return super(PyAnnoteJSONEncoder, self).default(o)
+
+
+class PyAnnoteJSONDecoder(JSONDecoder):
+    def __init__(self, **kwargs):
+        super(PyAnnoteJSONDecoder, self).__init__(
+            object_hook=pyannote.core.json.object_hook, **kwargs)
+
 app = Flask(__name__)
+app.json_encoder = PyAnnoteJSONEncoder
+app.json_decoder = PyAnnoteJSONDecoder
+
 
 from ._version import get_versions
 __version__ = get_versions()['version']

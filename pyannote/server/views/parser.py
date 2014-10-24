@@ -28,16 +28,9 @@
 from flask import Blueprint
 from flask import request
 from flask import json
-#from flask.ext.cors import origin
 from pyannote.server.crossdomain import crossdomain
 
 parser = Blueprint('parser', __name__, url_prefix='/parser')
-
-from camomilizer import Camomilizer
-camomilizer = Camomilizer()
-
-
-# ==== Supported formats ====
 
 import pyannote.parser.mdtm
 import pyannote.parser.uem
@@ -68,8 +61,11 @@ def parse_file(format):
         uploaded = request.files['file']
         parser.read(uploaded)
 
-        return json.dumps(camomilizer.parser_to_media(parser))
+        results = []
+        for uri in parser.uris:
+            for modality in parser.modalities:
+                results.append(parser(uri=uri, modality=modality).for_json())
+        return json.dumps(results)
 
     if request.method == 'GET':
-
-        return SUPPORTED_FORMAT[format][0].__doc__
+        return json.dumps(SUPPORTED_FORMAT[format][0].__doc__)
