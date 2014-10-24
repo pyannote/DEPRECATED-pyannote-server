@@ -1,3 +1,7 @@
+### Version 0.5 (2014-10-24)
+
+  - breaking change: new PyAnnote JSON format
+
 ### Version 0.4.1 (2014-10-01)
 
   - fix pyannote.metrics version requirement
