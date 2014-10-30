@@ -5,9 +5,9 @@ MAINTAINER Hervé Bredin <bredin@limsi.fr>
 RUN apt-get update
 RUN apt-get install -y python-pip python-dev build-essential
 RUN apt-get install -y gfortran libblas-dev liblapack-dev
-RUN python setup.py install
 
-# expose python app port
-EXPOSE 5000
+ADD . /src
+RUN pip install /src
 
 CMD ["python", "-m", "pyannote.server.run"]
+EXPOSE 5000
