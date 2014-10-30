@@ -31,7 +31,6 @@
 from flask import Blueprint
 from flask import request
 from flask import json
-from pyannote.server.crossdomain import crossdomain
 
 metric = Blueprint('metric', __name__, url_prefix='/metric')
 
@@ -59,7 +58,6 @@ SUPPORTED_METRIC = {
 
 
 @metric.route('/', methods=['GET'])
-@crossdomain(origin='*', headers='Content-Type')
 def get_supported():
 
     if request.method == 'GET':
@@ -67,7 +65,6 @@ def get_supported():
 
 
 @metric.route('/<name>/', methods=['POST'])
-@crossdomain(origin='*', headers='Content-Type')
 def compute_metric(name):
 
     if request.method == 'POST':

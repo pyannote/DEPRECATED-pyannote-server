@@ -30,6 +30,7 @@
 
 from flask import Flask
 from flask.json import JSONEncoder, JSONDecoder
+from flask.ext.cors import CORS
 import pyannote.core.json
 
 
@@ -57,6 +58,8 @@ app = Flask(__name__)
 app.json_encoder = PyAnnoteJSONEncoder
 app.json_decoder = PyAnnoteJSONDecoder
 
+# allow cross-origin JSON from anywhere
+cors = CORS(app, headers='Content-Type')
 
 from ._version import get_versions
 __version__ = get_versions()['version']
