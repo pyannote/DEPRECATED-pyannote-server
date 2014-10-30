@@ -1,3 +1,7 @@
+### Version 0.6.1 (2014-10-30)
+
+  - docker: install pyannote.server from source
+
 ### Version 0.6 (2014-10-30)
 
   - switch to pyannote.parser 0.2
