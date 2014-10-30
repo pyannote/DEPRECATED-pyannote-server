@@ -34,31 +34,24 @@ from flask import json
 
 parser = Blueprint('parser', __name__, url_prefix='/parser')
 
-import pyannote.parser.mdtm
-import pyannote.parser.uem
-
-SUPPORTED_FORMAT = {
-    'mdtm': [pyannote.parser.mdtm, pyannote.parser.mdtm.MDTMParser],
-    'uem': [pyannote.parser.uem, pyannote.parser.uem.UEMParser],
-}
+from pyannote.parser import ParserPlugins, MagicParser
 
 
-# GET /parser/ returns
 @parser.route('/', methods=['GET'])
 def get_supported():
-    return json.dumps(sorted(SUPPORTED_FORMAT))
+    return json.dumps(sorted(ParserPlugins))
 
 
 @parser.route('/<format>/', methods=['GET', 'POST'])
 def parse_file(format):
 
+    Parser = MagicParser.get_parser(format)
+
     if request.method == 'POST':
 
-        # initialize new parser for requested format
-        parser = SUPPORTED_FORMAT[format][1]()
-
-        # parse uploaded file
         uploaded = request.files['file']
+
+        parser = Parser()
         parser.read(uploaded)
 
         results = []
@@ -68,4 +61,4 @@ def parse_file(format):
         return json.dumps(results)
 
     if request.method == 'GET':
-        return json.dumps(SUPPORTED_FORMAT[format][0].__doc__)
+        return json.dumps(Parser.__doc__)

@@ -49,7 +49,7 @@ setup(
     install_requires=[
         'pyannote.core >= 0.2',
         'pyannote.metrics >= 0.3',
-        'pyannote.parser >= 0.1',
+        'pyannote.parser >= 0.2',
         'flask >= 0.10.1',
         'flask-cors >= 1.9'
     ],
