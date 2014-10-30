@@ -4,7 +4,7 @@
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2013-2014 CNRS (Hervé BREDIN - http://herve.niderb.fr/)
+# Copyright (c) 2013-2014 CNRS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,12 @@
 # SOFTWARE.
 #
 
+# AUTHORS
+# Hervé BREDIN - http://herve.niderb.fr/
+
 from flask import Flask
 from flask.json import JSONEncoder, JSONDecoder
+from flask.ext.cors import CORS
 import pyannote.core.json
 
 
@@ -51,9 +55,15 @@ class PyAnnoteJSONDecoder(JSONDecoder):
             object_hook=pyannote.core.json.object_hook, **kwargs)
 
 app = Flask(__name__)
+
+# auto-magically transform pyannote.core instances into JSON
 app.json_encoder = PyAnnoteJSONEncoder
+
+# auto-magically get pyannote.core instances from JSON
 app.json_decoder = PyAnnoteJSONDecoder
 
+# allow cross-origin JSON from anywhere
+cors = CORS(app, headers='Content-Type')
 
 from ._version import get_versions
 __version__ = get_versions()['version']

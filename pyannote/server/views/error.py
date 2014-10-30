@@ -4,7 +4,7 @@
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2013-2014 CNRS (Hervé BREDIN - http://herve.niderb.fr/)
+# Copyright (c) 2013-2014 CNRS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -25,10 +25,13 @@
 # SOFTWARE.
 #
 
+# AUTHORS
+# Hervé BREDIN - http://herve.niderb.fr/
+
+
 from flask import Blueprint
 from flask import request
 from flask import json
-from pyannote.server.crossdomain import crossdomain
 
 error = Blueprint('error', __name__, url_prefix='/error')
 
@@ -40,7 +43,6 @@ segmentation_error = SegmentationError()
 
 
 @error.route('/diff', methods=['POST'])
-@crossdomain(origin='*', headers='Content-Type')
 def compute_diff():
 
     if request.method == 'POST':
@@ -55,7 +57,6 @@ def compute_diff():
 
 
 # @error.route('/regression', methods=['POST'])
-# @crossdomain(origin='*', headers='Content-Type')
 # def compute_regression():
 
 #     if request.method == 'POST':
@@ -72,7 +73,6 @@ def compute_diff():
 
 
 @error.route('/segmentation', methods=['POST'])
-@crossdomain(origin='*', headers='Content-Type')
 def compute_segmentation_error():
 
     if request.method == 'POST':

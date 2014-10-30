@@ -4,7 +4,7 @@
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2013-2014 CNRS (Hervé BREDIN - http://herve.niderb.fr/)
+# Copyright (c) 2013-2014 CNRS
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -25,10 +25,12 @@
 # SOFTWARE.
 #
 
+# AUTHORS
+# Hervé BREDIN - http://herve.niderb.fr/
+
 from flask import Blueprint
 from flask import request
 from flask import json
-from pyannote.server.crossdomain import crossdomain
 
 metric = Blueprint('metric', __name__, url_prefix='/metric')
 
@@ -56,7 +58,6 @@ SUPPORTED_METRIC = {
 
 
 @metric.route('/', methods=['GET'])
-@crossdomain(origin='*', headers='Content-Type')
 def get_supported():
 
     if request.method == 'GET':
@@ -64,7 +65,6 @@ def get_supported():
 
 
 @metric.route('/<name>/', methods=['POST'])
-@crossdomain(origin='*', headers='Content-Type')
 def compute_metric(name):
 
     if request.method == 'POST':
