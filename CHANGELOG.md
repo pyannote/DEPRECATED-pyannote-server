@@ -1,4 +1,4 @@
-### Version 0.6.1 (2014-10-30)
+### Version 0.6.2 (2014-10-30)
 
   - docker: install pyannote.server from source
 
