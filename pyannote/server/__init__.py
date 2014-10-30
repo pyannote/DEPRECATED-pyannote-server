@@ -55,7 +55,11 @@ class PyAnnoteJSONDecoder(JSONDecoder):
             object_hook=pyannote.core.json.object_hook, **kwargs)
 
 app = Flask(__name__)
+
+# auto-magically transform pyannote.core instances into JSON
 app.json_encoder = PyAnnoteJSONEncoder
+
+# auto-magically get pyannote.core instances from JSON
 app.json_decoder = PyAnnoteJSONDecoder
 
 # allow cross-origin JSON from anywhere
