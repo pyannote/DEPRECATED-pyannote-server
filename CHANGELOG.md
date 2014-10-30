@@ -1,3 +1,8 @@
+### Version 0.6 (2014-10-30)
+
+  - switch to pyannote.parser 0.2
+  - switch to flask-cors
+
 ### Version 0.5 (2014-10-24)
 
   - breaking change: new PyAnnote JSON format
