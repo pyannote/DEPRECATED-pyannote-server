@@ -51,25 +51,25 @@ def compute_diff():
         R = data['reference']
         H = data['hypothesis']
 
-        D = identificationErrorAnalysis.annotation(R, H)
+        D = identificationErrorAnalysis.difference(R, H)
 
         return json.dumps(D)
 
 
-# @error.route('/regression', methods=['POST'])
-# def compute_regression():
+@error.route('/regression', methods=['POST'])
+def compute_regression():
 
-#     if request.method == 'POST':
+    if request.method == 'POST':
 
-#         data = request.json
+        data = request.json
 
-#         R = data['reference']
-#         B = data['before']
-#         A = data['after']
+        R = data['reference']
+        B = data['before']
+        A = data['after']
 
-#         D = diff.regression(R, B, A)
+        D = identificationErrorAnalysis.regression(R, B, A)
 
-#         return json.dumps(D)
+        return json.dumps(D)
 
 
 @error.route('/segmentation', methods=['POST'])
