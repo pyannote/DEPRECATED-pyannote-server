@@ -1,3 +1,7 @@
+### Version 0.7 (2014-10-31)
+
+  - feat: /error/regression is back!
+
 ### Version 0.6.2 (2014-10-30)
 
   - docker: install pyannote.server from source
