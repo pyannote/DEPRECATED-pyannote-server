@@ -43,7 +43,8 @@ segmentation_error = SegmentationError()
 
 
 @error.route('/diff', methods=['POST'])
-def compute_diff():
+@error.route('/difference', methods=['POST'])
+def compute_difference():
 
     if request.method == 'POST':
 
